@@ -20,6 +20,18 @@ import java.io.IOException;
 import sssta.org.compiling.MyApplication;
 import sssta.org.compiling.R;
 
+/**
+ * edit view输入示例
+ *
+ * origin is (100,100)
+ * for t from 0 to 100 step 1 draw(t,0)
+ *
+ * origin is (200,400)//中心点
+ * stroke is 5        //绘点宽度
+ * scale is (100,100) //x，y放缩比例
+ * for t from 0 to 2*pi step pi/50 draw(sin(t),tan(t)) //绘图描述
+ */
+
 public class EditActivity extends AppCompatActivity {
 
     private EditText editText;

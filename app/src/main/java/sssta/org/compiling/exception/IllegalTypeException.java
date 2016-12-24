@@ -1,4 +1,4 @@
-package sssta.org.compiling.compile;
+package sssta.org.compiling.exception;
 
 /**
  * Created by lint on 16/12/22.

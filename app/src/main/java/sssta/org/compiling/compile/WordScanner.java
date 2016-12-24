@@ -11,6 +11,8 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import sssta.org.compiling.exception.IllegalTypeException;
+
 /**
  * Created by lint on 16/12/14.
  * 词法分析器

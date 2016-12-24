@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.Function;
 
 import sssta.org.compiling.MyApplication;
+import sssta.org.compiling.exception.IllegalTypeException;
+import sssta.org.compiling.exception.SyntaxErrorException;
 
 
 /**

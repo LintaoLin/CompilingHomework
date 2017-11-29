@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import sssta.org.compiling.exception.IllegalTypeException;
 
 /**
- * Created by lint on 16/12/14.
  * 词法分析器
  */
 public class WordScanner {
@@ -30,10 +29,10 @@ public class WordScanner {
     private int line = 0;
 
     enum TokenType {
-        ORIGIN,SCALE,ROT,IS,TO,STEP,DRAW,FOR,FROM,       //保留字
+        ORIGIN, SCALE, ROT, IS, TO, STEP, DRAW, FOR, FROM,       //保留字
         T,    //参数
         DIGIT,  //数字
-        PLUS,MINUS,MUL,DIV,POWER,  //运算符
+        PLUS, MINUS, MUL, DIV, POWER,  //运算符
         COMMA, //逗号
         L_BREAKET, R_BREAKET, //()
         FUNC, //函数
@@ -44,21 +43,20 @@ public class WordScanner {
         COLOR //点的颜色
     }
 
-    private static Map<String,Integer> colorMap = new ArrayMap<>();
+    private static Map<String, Integer> colorMap = new ArrayMap<>();
 
-    static Function<Double,Double> sin = new Function<Double, Double>() {
+    static Function<Double, Double> sin = new Function<Double, Double>() {
         @Override
         public Double apply(Double aDouble) {
             return Math.sin(aDouble);
         }
     };
 
-    static Function<Double,Double> cos = Math::cos;
+    static Function<Double, Double> cos = Math::cos;
 
-    static Function<Double,Double> tan = Math::tan;
+    static Function<Double, Double> tan = Math::tan;
 
     static Function<Double, Double> sqrt = Math::sqrt;
-
 
     static class Token {
         private TokenType type;
@@ -87,44 +85,44 @@ public class WordScanner {
     private static Map<String, Token> tokenMap = new HashMap<>();
 
     static {
-        tokenMap.put("PI",new Token(TokenType.CONST_ID, 3.1415926, null));
+        tokenMap.put("PI", new Token(TokenType.CONST_ID, 3.1415926, null));
         tokenMap.put("E", new Token(TokenType.CONST_ID, 2.71828, null));
         tokenMap.put("T", new Token(TokenType.T, 0, null));
-        tokenMap.put("TO",new Token(TokenType.TO, 0, null));
-        tokenMap.put("SIN",new Token(TokenType.FUNC, 0, sin));
+        tokenMap.put("TO", new Token(TokenType.TO, 0, null));
+        tokenMap.put("SIN", new Token(TokenType.FUNC, 0, sin));
         tokenMap.put("COS", new Token(TokenType.FUNC, 0, cos));
         tokenMap.put("TAN", new Token(TokenType.FUNC, 0, tan));
         tokenMap.put("SQRT", new Token(TokenType.FUNC, 0, sqrt));
         tokenMap.put("ORIGIN", new Token(TokenType.ORIGIN, 0, null));
-        tokenMap.put("ROT",new Token(TokenType.ROT, 0, null));
+        tokenMap.put("ROT", new Token(TokenType.ROT, 0, null));
         tokenMap.put("IS", new Token(TokenType.IS, 0, null));
-        tokenMap.put("FOR", new Token(TokenType.FOR, 0 ,null));
+        tokenMap.put("FOR", new Token(TokenType.FOR, 0, null));
         tokenMap.put("FROM", new Token(TokenType.FROM, 0, null));
         tokenMap.put("STEP", new Token(TokenType.STEP, 0, null));
-        tokenMap.put("DRAW",new Token(TokenType.DRAW, 0, null));
-        tokenMap.put("SCALE",new Token(TokenType.SCALE, 0, null));
-        tokenMap.put("(",new Token(TokenType.L_BREAKET, 0 ,null ));
-        tokenMap.put(")",new Token(TokenType.R_BREAKET, 0, null));
-        tokenMap.put("+",new Token(TokenType.PLUS, 0, null));
-        tokenMap.put("-",new Token(TokenType.MINUS, 0, null));
-        tokenMap.put("*",new Token(TokenType.MUL, 0, null));
-        tokenMap.put("/",new Token(TokenType.DIV, 0, null));
-        tokenMap.put(",",new Token(TokenType.COMMA, 0, null));
-        tokenMap.put("LINE_FIN",new Token(TokenType.LINE_FIN,0,null));
-        tokenMap.put("COLOR",new Token(TokenType.COLOR, 0, null));
-        tokenMap.put("STROKE",new Token(TokenType.STROKE, 0, null));
+        tokenMap.put("DRAW", new Token(TokenType.DRAW, 0, null));
+        tokenMap.put("SCALE", new Token(TokenType.SCALE, 0, null));
+        tokenMap.put("(", new Token(TokenType.L_BREAKET, 0, null));
+        tokenMap.put(")", new Token(TokenType.R_BREAKET, 0, null));
+        tokenMap.put("+", new Token(TokenType.PLUS, 0, null));
+        tokenMap.put("-", new Token(TokenType.MINUS, 0, null));
+        tokenMap.put("*", new Token(TokenType.MUL, 0, null));
+        tokenMap.put("/", new Token(TokenType.DIV, 0, null));
+        tokenMap.put(",", new Token(TokenType.COMMA, 0, null));
+        tokenMap.put("LINE_FIN", new Token(TokenType.LINE_FIN, 0, null));
+        tokenMap.put("COLOR", new Token(TokenType.COLOR, 0, null));
+        tokenMap.put("STROKE", new Token(TokenType.STROKE, 0, null));
 
-        colorMap.put("BLACK",Color.BLACK);
-        colorMap.put("BLUE",Color.BLUE);
-        colorMap.put("CYAN",Color.CYAN);
-        colorMap.put("DKGRAY",Color.DKGRAY);
-        colorMap.put("GRAY",Color.GRAY);
-        colorMap.put("GREEN",Color.GREEN);
-        colorMap.put("LTGRAY",Color.LTGRAY);
-        colorMap.put("MAGENTA",Color.MAGENTA);
-        colorMap.put("RED",Color.RED);
-        colorMap.put("WHITE",Color.WHITE);
-        colorMap.put("YELLOW",Color.YELLOW);
+        colorMap.put("BLACK", Color.BLACK);
+        colorMap.put("BLUE", Color.BLUE);
+        colorMap.put("CYAN", Color.CYAN);
+        colorMap.put("DKGRAY", Color.DKGRAY);
+        colorMap.put("GRAY", Color.GRAY);
+        colorMap.put("GREEN", Color.GREEN);
+        colorMap.put("LTGRAY", Color.LTGRAY);
+        colorMap.put("MAGENTA", Color.MAGENTA);
+        colorMap.put("RED", Color.RED);
+        colorMap.put("WHITE", Color.WHITE);
+        colorMap.put("YELLOW", Color.YELLOW);
     }
 
     static ArrayList<TokenType> operationArray = new ArrayList<>();
@@ -154,14 +152,14 @@ public class WordScanner {
             String s;
             try {
                 while ((s = bufferedReader.readLine()) != null) {
-                    line ++;
+                    line++;
                     if (s.length() > 0) {
                         stringChars = s.toUpperCase().toCharArray();
                         wordIndex = 0;
                         break;
                     }
                 }
-                if (s == null){
+                if (s == null) {
                     token = new Token(TokenType.FILE_FIN, 0, null);
                     bufferedReader.close();
                     return token;
@@ -169,15 +167,15 @@ public class WordScanner {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if ( wordIndex == stringChars.length) {
-            wordIndex ++;
+        } else if (wordIndex == stringChars.length) {
+            wordIndex++;
             token = tokenMap.get(TokenType.LINE_FIN.name());
             return token;
         }
 
         StringBuilder stringBuilder = new StringBuilder();
         boolean isDigit = false;
-        for (; wordIndex < stringChars.length; wordIndex ++) {
+        for (; wordIndex < stringChars.length; wordIndex++) {
             boolean isFinished = false;
             if (stringChars[wordIndex] == ' ') {
                 if (stringBuilder.length() == 0) {
@@ -228,17 +226,16 @@ public class WordScanner {
             if (value < 0) {
                 throw new IllegalTypeException();
             }
-            token = new Token(TokenType.DIGIT, value , null);
+            token = new Token(TokenType.DIGIT, value, null);
         } else if (colorMap.containsKey(word)) {
             token = new Token(TokenType.DIGIT, colorMap.get(word), null);
         } else {
             if (tokenMap.containsKey(word)) {
                 token = tokenMap.get(word);
             } else {
-                throw new RuntimeException("unsolved type"+ word + " in line " + line);
+                throw new RuntimeException("unsolved type" + word + " in line " + line);
             }
         }
         return token;
     }
-
 }

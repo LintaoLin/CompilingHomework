@@ -1,21 +1,14 @@
 package sssta.org.compiling;
 
-import android.app.Application;
-
-/**
- * Created by mac on 16/12/23.
- */
-
-public class MyApplication extends Application {
+public class Application extends android.app.Application {
 
     public static String fileName = "DrawF";
 
-    public static MyApplication     mInstance;
+    public static Application mInstance;
 
-    public MyApplication(){
+    public Application() {
         mInstance = this;
     }
-
 
     public String getAppDirPath() {
         return getFilesDir().getAbsolutePath();

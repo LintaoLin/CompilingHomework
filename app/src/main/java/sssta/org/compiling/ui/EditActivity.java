@@ -17,7 +17,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import sssta.org.compiling.MyApplication;
+import sssta.org.compiling.Application;
 import sssta.org.compiling.R;
 
 /**
@@ -43,7 +43,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         editText = (EditText) findViewById(R.id.editView);
-        file = new File(MyApplication.mInstance.getAppDirPath(),MyApplication.fileName);
+        file = new File(Application.mInstance.getAppDirPath(), Application.fileName);
         if (!file.exists()) {
 
         } else {
@@ -93,7 +93,7 @@ public class EditActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

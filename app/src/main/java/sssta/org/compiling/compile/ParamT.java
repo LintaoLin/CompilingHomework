@@ -1,8 +1,5 @@
 package sssta.org.compiling.compile;
 
-/**
- * Created by lint on 16/12/23.
- */
 public class ParamT {
     private double start, end;
 

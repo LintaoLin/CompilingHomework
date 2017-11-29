@@ -1,8 +1,5 @@
 package sssta.org.compiling.exception;
 
-/**
- * Created by lint on 16/12/22.
- */
 public class IllegalTypeException extends Exception {
     public IllegalTypeException() {
     }
@@ -19,7 +16,8 @@ public class IllegalTypeException extends Exception {
         super(cause);
     }
 
-    public IllegalTypeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public IllegalTypeException(String message, Throwable cause, boolean enableSuppression,
+        boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

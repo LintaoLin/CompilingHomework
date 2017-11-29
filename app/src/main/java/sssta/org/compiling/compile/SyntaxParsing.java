@@ -8,14 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import sssta.org.compiling.MyApplication;
+import sssta.org.compiling.Application;
 import sssta.org.compiling.exception.IllegalTypeException;
 import sssta.org.compiling.exception.SyntaxErrorException;
 
-
-/**
- * Created by lint on 16/12/23.
- */
 public class SyntaxParsing {
 
     public interface OnParsingFinishedListener {
@@ -48,7 +44,7 @@ public class SyntaxParsing {
     }
 
     public void parse() throws IllegalTypeException, SyntaxErrorException, FileNotFoundException {
-        File file = new File(MyApplication.mInstance.getAppDirPath(),MyApplication.fileName);
+        File file = new File(Application.mInstance.getAppDirPath(), Application.fileName);
 
         if (!file.exists()) {
             throw new FileNotFoundException("file not exist");
@@ -57,9 +53,8 @@ public class SyntaxParsing {
         wordScanner = new WordScanner(file);
         fetchToken();
 
-
-        origin = new ViewParams.Origin(0,0);
-        scale = new ViewParams.Scale(1,1);
+        origin = new ViewParams.Origin(0, 0);
+        scale = new ViewParams.Scale(1, 1);
         while (token.getType() != WordScanner.TokenType.FILE_FIN) {
 
             switch (token.getType()) {
@@ -78,7 +73,6 @@ public class SyntaxParsing {
                 case COLOR:
                     matchColor();
                     break;
-
             }
         }
         if (onParsingFinishedListener != null) {
@@ -107,10 +101,10 @@ public class SyntaxParsing {
         matchToken(WordScanner.TokenType.COMMA);
         yExpr = expression();
         matchToken(WordScanner.TokenType.R_BREAKET);
-        ParamT paramT = new ParamT(startValue,endValue);
+        ParamT paramT = new ParamT(startValue, endValue);
         matchToken(WordScanner.TokenType.LINE_FIN);
 
-        ViewParams viewParams = new ViewParams(paramT,stepValue,xExpr,yExpr);
+        ViewParams viewParams = new ViewParams(paramT, stepValue, xExpr, yExpr);
         viewParams.setOrigin(origin);
         viewParams.setScale(scale);
         viewParams.setColor(color);
@@ -118,7 +112,7 @@ public class SyntaxParsing {
         viewParamsList.add(viewParams);
 
         System.out.println(viewParams.getOrigin().getX() + " " + viewParams.getOrigin().getY() + " " +
-                " " + viewParams.getParamT().getStart() + " " + viewParams.getParamT().getEnd());
+            " " + viewParams.getParamT().getStart() + " " + viewParams.getParamT().getEnd());
         System.out.println(stepValue);
     }
 
@@ -133,7 +127,7 @@ public class SyntaxParsing {
         double y = countExprValue(yTree);
         matchToken(WordScanner.TokenType.R_BREAKET);
         matchToken(WordScanner.TokenType.LINE_FIN);
-        scale = new ViewParams.Scale(x,y);
+        scale = new ViewParams.Scale(x, y);
     }
 
     private void matchOrigin() throws IllegalTypeException, SyntaxErrorException {
@@ -147,7 +141,7 @@ public class SyntaxParsing {
         double y = countExprValue(yTree);
         matchToken(WordScanner.TokenType.R_BREAKET);
         matchToken(WordScanner.TokenType.LINE_FIN);
-        origin = new ViewParams.Origin(x,y);
+        origin = new ViewParams.Origin(x, y);
     }
 
     private void matchStokeWidth() throws IllegalTypeException, SyntaxErrorException {
@@ -169,7 +163,8 @@ public class SyntaxParsing {
         color = (int) value;
     }
 
-    private void matchToken(WordScanner.TokenType tokenType) throws SyntaxErrorException, IllegalTypeException {
+    private void matchToken(WordScanner.TokenType tokenType)
+        throws SyntaxErrorException, IllegalTypeException {
         if (token.getType() != tokenType) {
             throw new SyntaxErrorException();
         }
@@ -187,11 +182,12 @@ public class SyntaxParsing {
         WordScanner.TokenType tmpTokenType;
         left = term();
 
-        while (token.getType() == WordScanner.TokenType.PLUS || token.getType() == WordScanner.TokenType.MINUS) {
+        while (token.getType() == WordScanner.TokenType.PLUS
+            || token.getType() == WordScanner.TokenType.MINUS) {
             tmpTokenType = token.getType();
             matchToken(token.getType());
             right = term();
-            left = makeExprTree(tmpTokenType, left,right);
+            left = makeExprTree(tmpTokenType, left, right);
         }
 
         return left;
@@ -206,7 +202,7 @@ public class SyntaxParsing {
             tmpTokenType = token.getType();
             matchToken(tmpTokenType);
             right = factor();
-            left = makeExprTree(tmpTokenType,left,right);
+            left = makeExprTree(tmpTokenType, left, right);
         }
         return left;
     }
@@ -225,8 +221,8 @@ public class SyntaxParsing {
 
     /**
      * S -> (E)|const num|T|Func
-     * @return ExprTree
      *
+     * @return ExprTree
      */
     private ExprTree atom() throws IllegalTypeException, SyntaxErrorException {
         ExprTree addressTree, tempTree;
@@ -249,7 +245,7 @@ public class SyntaxParsing {
             case FUNC:
                 matchToken(WordScanner.TokenType.FUNC);
                 tempTree = expression();
-                addressTree = makeExprTree(WordScanner.TokenType.FUNC,tempTree,mToken.getFunction());
+                addressTree = makeExprTree(WordScanner.TokenType.FUNC, tempTree, mToken.getFunction());
                 break;
             case L_BREAKET:
                 matchToken(WordScanner.TokenType.L_BREAKET);
@@ -262,7 +258,6 @@ public class SyntaxParsing {
         return addressTree;
     }
 
-
     private ExprTree makeExprTree(WordScanner.TokenType tokenType, double value) {
         ExprTree exprTree = new ExprTree();
         exprTree.setTokenType(tokenType);
@@ -273,31 +268,33 @@ public class SyntaxParsing {
     private ExprTree makeExprTree(WordScanner.TokenType tokenType, ExprTree child, Function function) {
         ExprTree exprTree = new ExprTree();
         exprTree.setTokenType(tokenType);
-        exprTree.setTokenValue(new ExprTree.FuncNode(child,function));
+        exprTree.setTokenValue(new ExprTree.FuncNode(child, function));
         return exprTree;
     }
 
     private ExprTree makeExprTree(WordScanner.TokenType tokenType, ExprTree left, ExprTree right) {
         ExprTree exprTree = new ExprTree();
         exprTree.setTokenType(tokenType);
-        exprTree.setTokenValue(new ExprTree.OperationNode(left,right));
+        exprTree.setTokenValue(new ExprTree.OperationNode(left, right));
         return exprTree;
     }
 
     double countExprValue(ExprTree exprTree) throws SyntaxErrorException {
         double result = 0;
-        if (exprTree.getTokenType() != WordScanner.TokenType.DIGIT && exprTree.getTokenType() != WordScanner.TokenType.CONST_ID) {
+        if (exprTree.getTokenType() != WordScanner.TokenType.DIGIT
+            && exprTree.getTokenType() != WordScanner.TokenType.CONST_ID) {
 
             if (WordScanner.operationArray.contains(exprTree.getTokenType())) {
                 ExprTree.OperationNode operationNode = (ExprTree.OperationNode) exprTree.getTokenValue();
                 if (operationNode != null && operationNode.isValiable()) {
-                    result += countExprValue(exprTree.getTokenType(), operationNode.getLeftParam(), operationNode.getRightParam());
+                    result += countExprValue(exprTree.getTokenType(), operationNode.getLeftParam(),
+                        operationNode.getRightParam());
                 } else {
                     throw new SyntaxErrorException("syntax error");
                 }
             } else if (exprTree.getTokenType() == WordScanner.TokenType.FUNC) {
                 ExprTree.FuncNode funcNode = (ExprTree.FuncNode) exprTree.getTokenValue();
-                result += (Double)funcNode.getFunction().apply(countExprValue(funcNode.getChild()));
+                result += (Double) funcNode.getFunction().apply(countExprValue(funcNode.getChild()));
             }
         } else {
             result += exprTree.getConstParam();
@@ -305,7 +302,8 @@ public class SyntaxParsing {
         return result;
     }
 
-    double countExprValue(WordScanner.TokenType tokenType, ExprTree left, ExprTree right) throws SyntaxErrorException {
+    double countExprValue(WordScanner.TokenType tokenType, ExprTree left, ExprTree right)
+        throws SyntaxErrorException {
         switch (tokenType) {
             case MINUS:
                 return countExprValue(left) - countExprValue(right);
@@ -320,7 +318,8 @@ public class SyntaxParsing {
     }
 
     private void printTree(ExprTree exprTree) throws SyntaxErrorException {
-        if (exprTree.getTokenType() != WordScanner.TokenType.DIGIT && exprTree.getTokenType() != WordScanner.TokenType.CONST_ID) {
+        if (exprTree.getTokenType() != WordScanner.TokenType.DIGIT
+            && exprTree.getTokenType() != WordScanner.TokenType.CONST_ID) {
 
             if (WordScanner.operationArray.contains(exprTree.getTokenType())) {
                 ExprTree.OperationNode operationNode = (ExprTree.OperationNode) exprTree.getTokenValue();
@@ -340,5 +339,4 @@ public class SyntaxParsing {
             System.out.print(exprTree.getTokenType().name());
         }
     }
-
 }

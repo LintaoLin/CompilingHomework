@@ -2,10 +2,6 @@ package sssta.org.compiling.compile;
 
 import android.graphics.Color;
 
-/**
- * Created by lint on 16/12/23.
- * 画图参数
- */
 public class ViewParams {
 
     private Origin origin;
@@ -51,7 +47,7 @@ public class ViewParams {
         }
     }
 
-    static class Scale{
+    static class Scale {
 
         private double scaleX, scaleY;
 
@@ -71,10 +67,10 @@ public class ViewParams {
         public double getScaleY() {
             return scaleY;
         }
+
         public void setScaleY(double scaleY) {
             this.scaleY = scaleY;
         }
-
     }
 
     public int getColor() {
@@ -116,7 +112,6 @@ public class ViewParams {
     public void setParamT(ParamT paramT) {
         this.paramT = paramT;
     }
-
 
     public ExprTree getxExprTree() {
         return xExprTree;

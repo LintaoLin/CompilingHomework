@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sssta.org.compiling.exception.SyntaxErrorException;
@@ -31,8 +32,8 @@ public class DrawView extends View {
     }
 
     public void setViewParamsArrayList(List<ViewParams> viewParamsArrayList) {
-        this.paramsList = viewParamsArrayList;
-        if (viewParamsArrayList != null && viewParamsArrayList.size() > 0) {
+        this.paramsList = new ArrayList<>(viewParamsArrayList);
+        if (viewParamsArrayList.size() > 0) {
             points = new float[viewParamsArrayList.size()][];
             for (int i = 0; i < viewParamsArrayList.size(); i++) {
                 ViewParams params = viewParamsArrayList.get(i);

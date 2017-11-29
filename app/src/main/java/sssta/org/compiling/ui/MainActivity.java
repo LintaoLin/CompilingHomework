@@ -14,7 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 import sssta.org.compiling.R;
 import sssta.org.compiling.compile.DrawView;
 import sssta.org.compiling.compile.SyntaxParsing;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawView drawView;
     private SyntaxParsing syntaxParsing;
+    private TextView errorText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
         );
 
         drawView = findViewById(R.id.my_view);
+        errorText = findViewById(R.id.error_text);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
             requestReadExternalPermission();
         }
 
-        syntaxParsing = new SyntaxParsing((viewParamsList) -> {
+        syntaxParsing = new SyntaxParsing(viewParamsList -> {
             if (viewParamsList != null) {
                 drawView.setViewParamsArrayList(viewParamsList);
             }
@@ -59,8 +62,12 @@ public class MainActivity extends AppCompatActivity {
     private void parseFile() {
         try {
             syntaxParsing.parse();
+            errorText.setVisibility(View.GONE);
+            drawView.setVisibility(View.VISIBLE);
         } catch (Exception e) {
-            Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show();
+            errorText.setText(e.getMessage());
+            errorText.setVisibility(View.VISIBLE);
+            drawView.setVisibility(View.GONE);
         }
     }
 

@@ -233,7 +233,7 @@ public class WordScanner {
             if (tokenMap.containsKey(word)) {
                 token = tokenMap.get(word);
             } else {
-                throw new RuntimeException("unsolved type" + word + " in line " + line);
+                throw new RuntimeException("unsolved type " + word + " in line " + line);
             }
         }
         return token;

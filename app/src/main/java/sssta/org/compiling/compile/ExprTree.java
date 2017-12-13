@@ -1,7 +1,5 @@
 package sssta.org.compiling.compile;
 
-import java.util.function.Function;
-
 public class ExprTree {
     private WordScanner.TokenType tokenType;
 

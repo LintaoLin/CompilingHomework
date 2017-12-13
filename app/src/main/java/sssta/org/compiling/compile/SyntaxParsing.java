@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
-
 import sssta.org.compiling.Application;
 import sssta.org.compiling.exception.IllegalTypeException;
 import sssta.org.compiling.exception.SyntaxErrorException;
@@ -20,8 +18,8 @@ public class SyntaxParsing {
 
     private WordScanner wordScanner;
     private WordScanner.Token token;
-    ViewParams.Origin origin;
-    ViewParams.Scale scale;
+    private ViewParams.Origin origin;
+    private ViewParams.Scale scale;
     private int strokeWidth = 2;
     private int color = Color.DKGRAY;
 

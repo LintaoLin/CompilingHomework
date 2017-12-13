@@ -7,7 +7,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +17,7 @@ import sssta.org.compiling.exception.IllegalTypeException;
  */
 public class WordScanner {
 
-    private static String digitString = "(\\d)+.{0,1}(\\d)*";
+    private static String digitString = "(\\d)+.?(\\d)*";
 
     private static Pattern digitPattern = Pattern.compile(digitString);
 
@@ -45,18 +44,13 @@ public class WordScanner {
 
     private static Map<String, Integer> colorMap = new ArrayMap<>();
 
-    static Function<Double, Double> sin = new Function<Double, Double>() {
-        @Override
-        public Double apply(Double aDouble) {
-            return Math.sin(aDouble);
-        }
-    };
+    private static Function<Double, Double> sin = Math::sin;
 
-    static Function<Double, Double> cos = Math::cos;
+    private static Function<Double, Double> cos = Math::cos;
 
-    static Function<Double, Double> tan = Math::tan;
+    private static Function<Double, Double> tan = Math::tan;
 
-    static Function<Double, Double> sqrt = Math::sqrt;
+    private static Function<Double, Double> sqrt = Math::sqrt;
 
     static class Token {
         private TokenType type;
@@ -81,6 +75,7 @@ public class WordScanner {
             return function;
         }
     }
+
 
     private static Map<String, Token> tokenMap = new HashMap<>();
 
